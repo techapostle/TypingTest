@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 public class GameController implements Initializable {
 
+
     // FXML elements
     @FXML
     private Text seconds;
@@ -42,6 +43,8 @@ public class GameController implements Initializable {
     private ImageView wrong;
     @FXML
     private Button playAgain;
+    @FXML
+    public Text gameTip;
 
     // store array of words
     ArrayList<String> wordsList = new ArrayList<>();
@@ -122,7 +125,7 @@ public class GameController implements Initializable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            opacity = opacity >= 100 ? 0 : opacity + 50;
+            opacity = opacity >= 100 ? 0 : opacity+50;
         }
         imageView.setOpacity(opacity); // opacity should == 0
     }
@@ -150,12 +153,12 @@ public class GameController implements Initializable {
             first = 0;
             executor.scheduleAtFixedRate(runnableTimer, 0, 1, TimeUnit.SECONDS);
         }
-        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+        if (keyEvent.getCode().equals(KeyCode.SPACE)) {
             String s = userWord.getText();
             String real = programWord.getText();
             countAll++;
 
-            if (s.equals(real)) {
+            if (s.trim().equals(real)) {
                 counter++;
                 wordsPerMin.setText(String.valueOf(counter));
                 Thread t = new Thread(fadeCorrect);
@@ -183,6 +186,7 @@ public class GameController implements Initializable {
         playAgain.setVisible(true);
         playAgain.setVisible(false);
         seconds.setText("60");
+        accuracy.setText(" ");
         addToList();
         Collections.shuffle(wordsList);
         programWord.setText(wordsList.get(wordCounter));
